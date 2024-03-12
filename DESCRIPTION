@@ -1,0 +1,14 @@
+Package: ee.dyn
+Type: Package
+Title: Emotion Expression Dynamics Toolbox: 
+Version: 0.1.0
+Author: Nate Hall
+Maintainer: Nate Hall <nate.hall329@gmail.com>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 7.2.3
+Depends: data.table, magrittr, tidyverse, dplyr 
+Imports: tibble 
