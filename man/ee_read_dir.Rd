@@ -4,19 +4,24 @@
 \alias{ee_read_dir}
 \title{Read and Tidy Noldus FaceReader Data Files in a Specified directory}
 \usage{
-ee_read_dir(dir_path, ncores = 1)
+ee_read_dir(dir_path, ncores = 1, rm_duplicates = TRUE)
 }
 \arguments{
 \item{dir_path}{Character string specifying the directory path containing the data files.}
 
 \item{ncores}{Integer specifying the number of cores for parallel processing.
 Default is 1 (single-core).}
+
+\item{rm_duplicates}{Logical. Whether or not to remove duplicate EE data if detected
+Default is TRUE.}
 }
 \value{
 A tibble with columns:
   * **id:** Participant ID (assuming this is extractable from the filename).
   * **fpath:** Full file path.
   * **dat:** The emotion expression data (structure from `ee_read` function).
+  * **duplicate** Logical on whether dat is duplicated elsewhere in the data.frame
+  * **rows** Number of rows in dat
 }
 \description{
 This function reads emotion expression data files exported from Noldus FaceReader V 8.0,
