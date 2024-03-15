@@ -42,7 +42,7 @@ ee_read <- function(fpath, id = NULL){
   tidy <- suppressWarnings(apply(tidy, 2, as.numeric)) %>% data.frame () %>% tibble()
 
   if(!is.null(id)){
-    tidy %>% mutate(id = id, .before = everything())
+    tidy <- tidy %>% mutate(id = id, .before = everything())
   }
 
 
