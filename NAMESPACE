@@ -3,6 +3,7 @@
 export(ee_get_descriptives)
 export(ee_read)
 export(ee_read_dir)
+export(get_na_edge_rows)
 export(ts_interp)
 import(dplyr)
 importFrom(data.table,fread)

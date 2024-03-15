@@ -24,10 +24,45 @@
 #' @importFrom imputeTS na_interpolation
 #' @importFrom dplyr mutate
 #'
+#' @export
+#'
 
 ts_interp <- function(dat, maxgap = 30, interp_option = "stine", range_restrict = TRUE) {
   # Impute missing values using interpolation
-  dat[,-1] <- apply(dat[,-1], 2, function(x) imputeTS::na_interpolation(x, option = interp_option, maxgap = maxgap))
+  # dat <- ee_read("dev/data/pt2.txt")
+
+  interp_cols <- which(!colnames(dat) %in% c("id", "time"))
+
+  #. N.B.
+  # the way na_interpolation works is that any gaps <= maxgap get interpolated over, including the very beginning of the timeseries
+  # - in my tests one subject had 29 NA rows in the beginning of their timeseries, and the interpolation essentially copied over the first measurement for the first 29 rows.
+  # - Instead, i prefer to drop the NA columns at the beginning and end of the timeseries, to ensure that interpolation only goes along runs of NAs with a reliable anchor at each end.
+
+  na_edges <- get_na_edge_rows(dat)
+
+  if(!length(na_edges) == 0){
+    # NA rows identified should be identical across columns. this simple function can help us make sure that is the case
+    check_identical_elements <- function(lst) {
+      reference_element <- lst[[1]] # Take the first element as reference
+      for (i in 2:length(lst)) { # Compare each element to the reference
+        if (!isTRUE(all.equal(reference_element, lst[[i]]))) {
+          return(FALSE) # Return FALSE if any element is not identical
+        }
+      }
+      return(TRUE) # Return TRUE if all elements are identical
+    }
+
+    if(!check_identical_elements(na_edges)){
+      warning("Be advised, across the columns checked, NA values at the beginning and end of the timeseries are different. \nThis can lead to unintended consequences during NA interpolation!")
+    }
+
+    remove_rows <- unlist(unique(na_edges))
+
+    cat("Removing NAs at the beginning | end of this subject's time series: ", remove_rows)
+    dat <- dat[-remove_rows,]
+  }
+
+  dat[,interp_cols] <- apply(dat[,interp_cols], 2, function(x) imputeTS::na_interpolation(x, option = interp_option, maxgap = maxgap))
 
   if(range_restrict){
     # Range adjustment (0-1 columns, excluding 'valence')
@@ -39,5 +74,4 @@ ts_interp <- function(dat, maxgap = 30, interp_option = "stine", range_restrict 
 
   return(dat)
 }
-
 
