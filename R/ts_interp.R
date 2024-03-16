@@ -66,7 +66,7 @@ ts_interp <- function(dat, maxgap = 30, interp_option = "stine", range_restrict 
 
   if(range_restrict){
     # Range adjustment (0-1 columns, excluding 'valence')
-    range_cols <- setdiff(names(dat), c("time", "valence"))
+    range_cols <- setdiff(names(dat), c("time", "id", "valence"))
     dat <- dat |>
       mutate(across(range_cols, ~ ifelse(.x < 0, 0, ifelse(.x > 1, 1, .x)), .names = "{col}_adjusted"),
              valence_adjusted = ifelse(valence < -1, -1, ifelse(valence > 1, 1, valence)))
