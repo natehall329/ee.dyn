@@ -36,7 +36,7 @@ ee_read_dir <- function(dir_path, ncores = 1, rm_duplicates = TRUE){
   stopifnot(all(grepl("^.*/pt\\d+\\.txt$", file_names)))
 
   uber_df <- tibble(id = as.numeric(  gsub("pt", "", tools::file_path_sans_ext(list.files(dir_path)))),
-                    fpath =  file_names) %>% arrange(id)
+                    fpath =  file_names) |> arrange(id)
 
   if(ncores == 1){
     uber_df$dat <- lapply(uber_df$fpath, ee_read)
@@ -50,7 +50,7 @@ ee_read_dir <- function(dir_path, ncores = 1, rm_duplicates = TRUE){
 
   # Remove any duplicates if they exist
   uber_df$duplicate <- duplicated(uber_df$dat)
-  if(rm_duplicates) uber_df <- uber_df %>% filter(!duplicate)
+  if(rm_duplicates) uber_df <- uber_df |> filter(!duplicate)
 
   ## seems like there are a couple that this did not capture that have the exact same number of rows, which seems very unlikely.
   uber_df$rows <- sapply(uber_df$dat, nrow)

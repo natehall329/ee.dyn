@@ -23,7 +23,6 @@
 #'
 #' @importFrom data.table fread
 #' @importFrom tibble tibble
-#' @importFrom magrittr %>%
 #' @importFrom dplyr select mutate
 #' @export
 
@@ -31,18 +30,18 @@
 ee_read <- function(fpath, id = NULL){
   cat("Reading and basic wrangling from: ", fpath, "\n")
 
-  raw <- data.table::fread(fpath, skip="Video Time", header=T) %>% tibble()
+  raw <- data.table::fread(fpath, skip="Video Time", header=T) |> tibble()
 
-  tidy <- raw %>% mutate(time = seq(0, .0333333333333333333*(nrow(.)-1), by =  .0333333333333333333)) %>%
+  tidy <- raw |> mutate(time = seq(0, .0333333333333333333*(nrow(.)-1), by =  .0333333333333333333)) |>
     select(time, Neutral, Happy, Sad, Angry, Surprised, Scared, Disgusted, Valence, Arousal)
 
   colnames(tidy) <- tolower(colnames(tidy))
 
   # returns all as numeric and sets fit failure messages to NA
-  tidy <- suppressWarnings(apply(tidy, 2, as.numeric)) %>% data.frame () %>% tibble()
+  tidy <- suppressWarnings(apply(tidy, 2, as.numeric)) |> data.frame () |> tibble()
 
   if(!is.null(id)){
-    tidy <- tidy %>% mutate(id = id, .before = everything())
+    tidy <- tidy |> mutate(id = id, .before = everything())
   }
 
 

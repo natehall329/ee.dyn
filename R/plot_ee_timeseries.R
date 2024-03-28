@@ -38,18 +38,18 @@ plot_ee_timeseries <- function(sub_ts, include_raw = TRUE, id = NULL, desc = NUL
 
   assertthat::assert_that(plot_type %in% c("combined", "discrete", "circumplex"))
 
-  ts_melt <- reshape2::melt(select(sub_ts, -id), id.vars = "time") %>% mutate(ts_class = case_when(variable %in% c("valence", "arousal") ~ "circumplex",
-                                                                                                    TRUE ~ "discrete")) %>% rename(`Emotion` = `variable`) %>% mutate(Emotion = str_to_title(Emotion,))
+  ts_melt <- reshape2::melt(select(sub_ts, -id), id.vars = "time") |> mutate(ts_class = case_when(variable %in% c("valence", "arousal") ~ "circumplex",
+                                                                                                    TRUE ~ "discrete")) |> rename(`Emotion` = `variable`) |> mutate(Emotion = str_to_title(Emotion,))
 
   # unique(ts_melt$Emotion)
   # str(ts_melt)
   # unique(ts_melt$ts_class)
 
-  # missing_times <- ts_melt$time[is.na(ts_melt$value)] %>% unique()
+  # missing_times <- ts_melt$time[is.na(ts_melt$value)] |> unique()
   cols <- c("Neutral" = "darkgrey", "Happy" = "yellow", "Sad" = "blue", "Angry" = "red", "Surprised" = "violet", "Scared" = "darkgreen", "Disgusted" = "darkorange") # colors that kinda match the emotions
   if(!is.null(id) & !is.null(desc)){
     title <- paste0("Subject: ", id)
-    desc <- desc %>% filter(emotion != "id")
+    desc <- desc |> filter(emotion != "id")
     subtitle <- paste0("Percentage of Readable Frames: ", round(unique(desc$perc_complete) * 100,2), "%")
   } else{title <- ""; subtitle <- ""}
 

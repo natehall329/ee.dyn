@@ -17,7 +17,7 @@
 #'
 #' @import dplyr
 #' @importFrom reshape2 melt
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr `|>`
 #' @examples
 #' # Assumes `ee_read` function is used to read time series data
 #' dat <- ee_read("dev/data/pt1.txt")
@@ -32,9 +32,9 @@
 
 ee_get_descriptives <- function(dat){
 
-  dmelt <- reshape2::melt(dat, id.vars = "time")  %>% rename(`emotion` = `variable`,
+  dmelt <- reshape2::melt(dat, id.vars = "time")  |> rename(`emotion` = `variable`,
                                                              `signal` = `value`)
-  descriptives <- dmelt %>% add_count(emotion) %>% group_by(emotion) %>%
+  descriptives <- dmelt |> add_count(emotion) |> group_by(emotion) |>
     dplyr::summarise(missing = sum(is.na(signal)),
                      complete = unique(n) - missing,
                      perc_complete = complete/unique(n),

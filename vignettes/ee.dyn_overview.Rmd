@@ -1,0 +1,63 @@
+---
+title: "Emotion Expression Dynamics Analysis"
+author: "Nate Hall"
+date: "2024-03-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ee.dyn)
+
+data_location <- "../dev/data"
+```
+
+# Single Subject
+
+```{r message=FALSE, warning=FALSE}
+single_pt <- file.path(data_location, "pt1.txt")
+
+pt1_raw <- ee_read(single_pt, id = 1)
+
+pt1_interp <- ts_interp(pt1_raw)
+
+# gives range-adjusted values in _adjusted columns, which you may want to check on your own but for our purposes this is totally fine. 
+
+pt1_interp <- pt1_interp %>% dplyr::select(id, time, ends_with("_adjusted")) %>% rename_with(~ gsub("_adjusted$", "", .x))
+
+pt1_descriptives <- ee_get_descriptives(pt1_interp) 
+
+
+pt1_plt <- plot_ee_timeseries(pt1_interp, 
+                   id = 1, 
+                   desc = pt1_descriptives,
+                   plot_type = "combined")
+
+plot(pt1_plt)
+
+pt1_plt_discrete <- plot_ee_timeseries(pt1_interp, 
+                   id = 1, 
+                   desc = pt1_descriptives,
+                   plot_type = "discrete")
+
+pt1_plt_valar <- plot_ee_timeseries(pt1_interp, 
+                   id = 1, 
+                   desc = pt1_descriptives,
+                   plot_type = "circumplex")
+
+
+```
+
+
+# Group Analysis
+
+```{r}
+
+
+
+
+
+
+
+```
+
