@@ -27,7 +27,7 @@
 #' @importFrom cowplot plot_grid
 #' @importFrom see theme_blackboard
 #' @importFrom ggpubr get_legend
-#' @import ggplot2 cowplot see ggpubr
+#' @import ggplot2 see ggpubr
 #'
 #' @author Nate Hall
 #'
