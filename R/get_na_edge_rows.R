@@ -20,6 +20,8 @@
 #' na_edge_rows <- get_na_edge_rows(dat, interp_cols)
 #' # Check the output to see the rows with NAs at the edges for 'measure1' and 'measure2'
 #'
+#' @author Nate Hall
+#'
 #' @export
 #'
 

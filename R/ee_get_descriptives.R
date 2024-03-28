@@ -17,7 +17,6 @@
 #'
 #' @import dplyr
 #' @importFrom reshape2 melt
-#' @importFrom magrittr `|>`
 #' @examples
 #' # Assumes `ee_read` function is used to read time series data
 #' dat <- ee_read("dev/data/pt1.txt")
