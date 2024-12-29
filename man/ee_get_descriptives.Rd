@@ -25,10 +25,12 @@ and standard descriptive statistics (mean, median, standard deviation, 5th perce
 95th percentile, minimum, and maximum) for each emotion.
 }
 \examples{
+\dontrun{
 # Assumes `ee_read` function is used to read time series data
-dat <- ee_read("dev/data/pt1.txt")
+dat <- ee_read("inst/extdata/pt1.txt")
 descriptives <- ee_get_descriptives(dat)
 print(descriptives)
+}
 
 }
 \author{
